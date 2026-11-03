@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Beaujolais Nouveau 2.3 – Votre avis compte</title>
+<meta name="description" content="Questionnaire de la 23ème édition du Beaujolais Nouveau des Lions Clubs d'Abidjan.">
+<meta name="theme-color" content="#00338D">
+<meta name="robots" content="noindex">
+<link rel="icon" href="img/logo.webp" type="image/webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bleu:#00338D; --bleu2:#0A44A8; --or:#EBB700; --or-clair:#FFF6D6;
+  --fond:#F5F7FC; --texte:#0E1B3D; --gris:#4A5878; --bord:#CBD5EA; --bord2:#DCE3F2;
+  --rouge:#B3261E; --clair:#D6E0F5;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--fond);color:var(--texte);-webkit-tap-highlight-color:transparent}
+button,input,textarea{font:inherit;color:inherit}
+.app{max-width:480px;margin:0 auto;min-height:100%;min-height:100dvh;display:flex;flex-direction:column;background:var(--fond);position:relative}
+[hidden]{display:none!important}
+
+/* Écrans bleus (accueil / merci) */
+.bleu{background:var(--bleu);color:#fff;position:relative;overflow:hidden;flex:1;display:flex;flex-direction:column}
+.rond{position:absolute;border-radius:50%;border:34px solid var(--bleu2);pointer-events:none}
+
+/* Accueil */
+#accueil{padding:36px 28px calc(28px + env(safe-area-inset-bottom))}
+.badge-ligne{display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:relative}
+.badge{background:var(--or);color:var(--bleu);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border-radius:999px}
+.date{font-size:13px;color:var(--clair)}
+.accueil-centre{flex:1;display:flex;flex-direction:column;justify-content:center;gap:26px;padding:28px 0;position:relative;text-align:center}
+.accueil-centre img{width:min(300px,80%);height:auto;align-self:center}
+.theme-titre{margin:0;font-size:20px;font-weight:800;color:var(--or)}
+.theme-sous{margin:2px 0 0;font-size:14px;font-weight:500;color:var(--clair)}
+h1{margin:0;font-weight:800}
+.accueil-centre h1{font-size:34px;line-height:1.15;margin-top:10px}
+.accueil-centre p.intro{margin:10px 0 0;font-size:15px;line-height:1.55;color:var(--clair)}
+.meta{display:flex;justify-content:center;gap:18px;font-size:13px;color:var(--clair)}
+.meta span{display:flex;align-items:center;gap:6px}
+.pied{margin:4px 0 0;text-align:center;font-size:12px;color:#B9C8EA}
+
+/* Boutons */
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:56px;border:0;border-radius:16px;font-size:17px;font-weight:700;cursor:pointer;text-decoration:none}
+.btn-or{background:var(--or);color:var(--bleu)}
+.btn-bleu{background:var(--bleu);color:#fff}
+.btn:active{transform:scale(.98)}
+.btn[disabled]{opacity:.6}
+
+/* En-tête des questions */
+.entete{background:var(--bleu);padding:18px 20px 16px;display:flex;flex-direction:column;gap:12px;position:sticky;top:0;z-index:5}
+.entete-ligne{display:flex;align-items:center;justify-content:space-between}
+.retour{width:44px;height:44px;border-radius:12px;background:var(--bleu2);color:#fff;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.marque{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.marque-ligne{display:flex;align-items:center;gap:6px}
+.marque img{width:84px;height:auto}
+.marque b{font-size:22px;font-weight:800;line-height:1;color:var(--or)}
+.marque small{font-size:10.5px;font-weight:500;line-height:1.2;color:var(--clair)}
+.progres{display:flex;align-items:center;gap:12px}
+.barre{flex:1;height:6px;border-radius:99px;background:var(--bleu2);overflow:hidden}
+.barre i{display:block;height:100%;width:20%;background:var(--or);border-radius:99px;transition:width .3s}
+.etape{font-size:12px;font-weight:600;color:#fff;white-space:nowrap}
+
+/* Écrans de questions */
+.ecran{flex:1;padding:22px 22px 0;display:flex;flex-direction:column;gap:18px}
+.ecran h1{font-size:26px;color:var(--bleu)}
+.aide{margin:4px 0 0;font-size:14px;color:var(--gris);line-height:1.5}
+.champ{display:flex;flex-direction:column;gap:8px}
+.lbl{font-size:14px;font-weight:600;line-height:1.4}
+.lbl .req{color:var(--rouge)}
+.lbl .opt{font-weight:400;color:var(--gris)}
+.txt{height:52px;border:2px solid var(--bord);border-radius:14px;padding:0 16px;font-size:16px;background:#fff;width:100%;outline:none}
+.txt:focus,textarea:focus{border-color:var(--bleu)}
+.txt.petit{height:46px;font-size:15px;border-radius:12px}
+.grille{display:grid;gap:10px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g6{grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.choix{min-height:50px;border-radius:14px;border:2px solid var(--bord);background:#fff;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;padding:6px 8px;text-align:center;line-height:1.25}
+.choix[aria-pressed="true"]{background:var(--bleu);border-color:var(--bleu);color:#fff}
+.choix .coche{display:none}
+.choix[aria-pressed="true"] .coche{display:block}
+.note{height:46px;padding:0;font-size:16px;font-weight:700;border-radius:12px}
+.bloc{background:#fff;border:1px solid var(--bord2);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.radios{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.radio{display:flex;align-items:center;gap:10px;min-height:44px;padding:0 10px;border-radius:12px;font-size:14px;cursor:pointer;border:1.5px solid transparent}
+.radio input{width:20px;height:20px;accent-color:var(--bleu);margin:0;flex-shrink:0}
+.radio:has(input:checked){background:#E8EEFB;font-weight:600;border-color:#C5D3F0}
+.erreur{font-size:13px;color:var(--rouge);font-weight:500;margin:0}
+.champ.ko .txt,.bloc.ko{border-color:var(--rouge)}
+
+/* Étoiles */
+.etoiles-liste{display:flex;flex-direction:column;gap:10px}
+.ligne-note{background:#fff;border:1px solid var(--bord2);border-radius:16px;padding:8px 10px 8px 14px;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.ligne-note div{min-width:0}
+.ligne-note strong{display:block;font-size:15px;font-weight:600;line-height:1.3}
+.ligne-note span{display:block;font-size:12px;color:var(--gris);line-height:1.3}
+.etoiles{display:flex;flex-shrink:0}
+.etoile{width:36px;height:44px;border:0;background:none;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.etoile svg{width:28px;height:28px;fill:none;stroke:#9AA8C7;stroke-width:1.6;stroke-linejoin:round;transition:transform .1s}
+.etoile.on svg{fill:var(--or);stroke:#C99A00}
+.etoile:active svg{transform:scale(1.2)}
+.legende{display:flex;justify-content:space-between;font-size:12px;color:var(--gris)}
+
+.impact{background:var(--or-clair);border:1px solid var(--or);border-radius:16px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start}
+.impact p{margin:0;font-size:13px;line-height:1.5}
+.impact strong{color:var(--bleu)}
+
+.case{display:flex;align-items:center;gap:12px;min-height:48px;padding:0 14px;border-radius:14px;border:2px solid var(--bord);background:#fff;font-size:15px;font-weight:600;cursor:pointer}
+.case input{width:20px;height:20px;accent-color:var(--bleu);margin:0;flex-shrink:0}
+.case:has(input:checked){border-color:var(--bleu);background:#E8EEFB}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.45;color:var(--gris);cursor:pointer}
+.consent input{width:20px;height:20px;accent-color:var(--bleu);margin:0;flex-shrink:0}
+
+.puces{display:flex;flex-wrap:wrap;gap:8px}
+.puce{height:40px;padding:0 14px;border-radius:999px;border:1.5px solid var(--bord);background:#fff;font-size:13px;font-weight:600;color:var(--bleu);cursor:pointer}
+textarea{min-height:200px;border:2px solid var(--bord);border-radius:16px;padding:14px 16px;font-size:15px;line-height:1.5;background:#fff;resize:vertical;width:100%;outline:none}
+.discret{margin:0;display:flex;gap:8px;align-items:center;font-size:12px;color:var(--gris)}
+
+.actions{position:sticky;bottom:0;padding:14px 22px calc(18px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--fond) 75%,rgba(245,247,252,0));margin-top:auto}
+
+/* Merci */
+#merci{padding:20px 22px calc(24px + env(safe-area-inset-bottom));gap:16px}
+#merci .marque{align-self:flex-end;position:relative}
+.merci-tete{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;position:relative}
+.ok{width:58px;height:58px;border-radius:50%;background:var(--or);display:flex;align-items:center;justify-content:center}
+.merci-tete h1{font-size:30px}
+.merci-tete p{margin:0;font-size:15px;line-height:1.55}
+.merci-tete .petit{font-size:14px;color:var(--clair)}
+.merci-tete strong{color:var(--or)}
+.logos{background:#fff;border-radius:18px;padding:14px 12px 16px;display:flex;flex-direction:column;gap:10px;position:relative}
+.logos-titre{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--bleu);text-align:center}
+.logos-grille{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 8px}
+.logo{width:72px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.logo img{height:66px;width:100%;object-fit:contain}
+.logo span{font-size:11px;font-weight:600;color:var(--texte);text-align:center;line-height:1.2}
+.logo-vide{height:66px;width:100%;border:1.5px dashed var(--bleu);border-radius:12px;background:#E8EEFB;display:flex;align-items:center;justify-content:center;text-align:center;font-size:10px;font-weight:600;line-height:1.3;color:var(--bleu);padding:4px}
+.sponsors .logos-grille img{height:48px;width:auto;max-width:120px;object-fit:contain}
+.merci-bas{margin-top:auto;display:flex;flex-direction:column;gap:10px;position:relative}
+.lien-autre{background:none;border:1.5px solid #6F8DD0;color:#fff;height:48px;border-radius:14px;font-size:15px;font-weight:600;cursor:pointer}
+.attente{font-size:12px;color:var(--or);text-align:center;margin:0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ========== ACCUEIL ========== -->
+<section id="accueil" class="bleu" data-ecran="0">
+  <div class="rond" style="right:-90px;top:-90px;width:260px;height:260px" aria-hidden="true"></div>
+  <div class="rond" style="left:-70px;bottom:120px;width:160px;height:160px;border-width:24px" aria-hidden="true"></div>
+  <div class="badge-ligne">
+    <span class="badge">23ème édition</span>
+    <span class="date">28 nov. 2026 · Espace Eden</span>
+  </div>
+  <div class="accueil-centre">
+    <img src="img/logo.webp" alt="Beaujolais Nouveau" width="300" height="130">
+    <div>
+      <p class="theme-titre">Beaujolais Nouveau 2.3</p>
+      <p class="theme-sous">pour 2X plus d'impact</p>
+      <h1>Votre avis compte&nbsp;!</h1>
+      <p class="intro">Merci d'être avec nous ce soir. En 2 minutes, aidez-nous à faire encore mieux l'an prochain… et découvrez comment aller plus loin à nos côtés.</p>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:14px;position:relative">
+    <button class="btn btn-or" type="button" data-aller="1">Commencer
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+    </button>
+    <div class="meta">
+      <span><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>≈ 2 minutes</span>
+      <span><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>5 étapes</span>
+    </div>
+    <p class="pied">Lions Clubs d'Abidjan · Aimons pour servir</p>
+  </div>
+</section>
+
+<!-- ========== EN-TÊTE COMMUN ========== -->
+<header class="entete" id="entete" hidden>
+  <div class="entete-ligne">
+    <button class="retour" type="button" id="retour" aria-label="Retour">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M11 6l-6 6 6 6"/></svg>
+    </button>
+    <div class="marque">
+      <div class="marque-ligne"><img src="img/logo.webp" alt="Beaujolais Nouveau" width="84" height="37"><b>2.3</b></div>
+      <small>pour 2X plus d'impact</small>
+    </div>
+  </div>
+  <div class="progres">
+    <div class="barre" aria-hidden="true"><i id="barre"></i></div>
+    <span class="etape" id="etape">Étape 1 sur 5</span>
+  </div>
+</header>
+
+<form id="form" novalidate autocomplete="on">
+
+<!-- ========== 1. VOUS ========== -->
+<section class="ecran" data-ecran="1" hidden>
+  <h1>Faisons connaissance</h1>
+  <div class="champ" id="c-nom">
+    <label class="lbl" for="nom">Nom et prénom <span class="req">*</span></label>
+    <input class="txt" id="nom" name="nom" type="text" autocomplete="name" maxlength="80" placeholder="Ex. Kouassi Aya">
+    <p class="erreur" hidden>Merci d'indiquer votre nom.</p>
+  </div>
+
+  <div class="champ" id="c-statut">
+    <span class="lbl" id="l-statut">Vous êtes… <span class="req">*</span></span>
+    <div class="grille g2" role="group" aria-labelledby="l-statut" data-unique="statut">
+      <button type="button" class="choix" data-v="Lion" aria-pressed="false"><svg class="coche" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EBB700" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Lion</button>
+      <button type="button" class="choix" data-v="Leo" aria-pressed="false"><svg class="coche" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EBB700" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Leo</button>
+      <button type="button" class="choix" data-v="Invité(e)" aria-pressed="false"><svg class="coche" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EBB700" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Invité(e)</button>
+      <button type="button" class="choix" data-v="Partenaire / Sponsor" aria-pressed="false" style="font-size:14px"><svg class="coche" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EBB700" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Partenaire / Sponsor</button>
+    </div>
+    <p class="erreur" hidden>Choisissez une réponse.</p>
+  </div>
+
+  <!-- Si Lion -->
+  <div class="bloc" id="b-lion" hidden>
+    <span class="lbl">Votre Lions Club Abidjan… <span class="req">*</span></span>
+    <div class="radios" id="r-lion"></div>
+    <input class="txt petit" id="lion-autre" type="text" maxlength="80" placeholder="Nom de votre club" aria-label="Nom de votre club" hidden>
+    <p class="erreur" hidden>Indiquez votre club.</p>
+  </div>
+
+  <!-- Si Leo -->
+  <div class="bloc" id="b-leo" hidden>
+    <span class="lbl">Votre Leo Club… <span class="req">*</span></span>
+    <div class="radios" id="r-leo"></div>
+    <input class="txt petit" id="leo-autre" type="text" maxlength="80" placeholder="Nom de votre Leo Club" aria-label="Nom de votre Leo Club" hidden>
+    <p class="erreur" hidden>Indiquez votre club.</p>
+  </div>
+
+  <!-- Si Invité -->
+  <div class="bloc" id="b-invite" hidden>
+    <div class="champ">
+      <label class="lbl" for="invite-par">Invité(e) par</label>
+      <input class="txt petit" id="invite-par" type="text" maxlength="80" placeholder="Nom de la personne">
+    </div>
+    <span class="lbl">De quel club&nbsp;?</span>
+    <div class="radios" id="r-invite"></div>
+    <input class="txt petit" id="invite-autre" type="text" maxlength="80" placeholder="Nom du club" aria-label="Nom du club" hidden>
+    <p class="erreur" hidden>Indiquez qui vous a invité(e) ou par quel club.</p>
+  </div>
+
+  <!-- Si Partenaire -->
+  <div class="bloc" id="b-partenaire" hidden>
+    <div class="champ">
+      <label class="lbl" for="entreprise">Entreprise / structure <span class="req">*</span></label>
+      <input class="txt petit" id="entreprise" type="text" autocomplete="organization" maxlength="100" placeholder="Nom de votre entreprise">
+    </div>
+    <p class="erreur" hidden>Indiquez le nom de votre entreprise.</p>
+  </div>
+</section>
+
+<!-- ========== 2. SOIRÉE ========== -->
+<section class="ecran" data-ecran="2" hidden>
+  <div>
+    <h1>Votre soirée</h1>
+    <p class="aide">Touchez les étoiles : 1 = décevant, 5 = excellent.</p>
+  </div>
+  <div class="etoiles-liste" id="etoiles"></div>
+</section>
+
+<!-- ========== 3. BILAN ========== -->
+<section class="ecran" data-ecran="3" hidden>
+  <h1>Votre bilan</h1>
+  <div class="champ">
+    <span class="lbl" id="l-reco">Sur 10, recommanderiez-vous cette soirée à un proche&nbsp;?</span>
+    <div class="grille g6" role="group" aria-labelledby="l-reco" data-unique="recommandation" id="notes10"></div>
+    <div class="legende"><span>0 = pas du tout</span><span>10 = absolument</span></div>
+  </div>
+  <div class="champ">
+    <span class="lbl" id="l-revenir">Reviendrez-vous l'an prochain&nbsp;?</span>
+    <div class="grille g3" role="group" aria-labelledby="l-revenir" data-unique="reviendra">
+      <button type="button" class="choix" data-v="Oui" aria-pressed="false">Oui</button>
+      <button type="button" class="choix" data-v="Peut-être" aria-pressed="false">Peut-être</button>
+      <button type="button" class="choix" data-v="Non" aria-pressed="false">Non</button>
+    </div>
+  </div>
+  <div class="champ">
+    <span class="lbl" id="l-fonds">Savez-vous à quoi servent les fonds récoltés ce soir&nbsp;?</span>
+    <div class="grille g2" role="group" aria-labelledby="l-fonds" data-unique="connaitFonds">
+      <button type="button" class="choix" data-v="Oui" aria-pressed="false">Oui</button>
+      <button type="button" class="choix" data-v="Pas vraiment" aria-pressed="false">Pas vraiment</button>
+    </div>
+  </div>
+  <div class="impact">
+    <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#00338D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg>
+    <p><strong>Votre soirée a un impact.</strong> Les fonds soutiennent le centre social et le centre féminin des Sœurs Servantes de Toupah : scolarité des filles, vivres pour les enfants malnutris, médicaments et équipements.</p>
+  </div>
+</section>
+
+<!-- ========== 4. ALLER PLUS LOIN ========== -->
+<section class="ecran" data-ecran="4" hidden>
+  <div>
+    <h1>Envie d'aller plus loin&nbsp;?</h1>
+    <p class="aide">Plusieurs choix possibles.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px" id="interets">
+    <label class="case"><input type="checkbox" value="Rejoindre le Lions Club">Rejoindre le Lions Club</label>
+    <label class="case"><input type="checkbox" value="Faire un don">Faire un don</label>
+    <label class="case"><input type="checkbox" value="Devenir partenaire / sponsor">Devenir partenaire / sponsor</label>
+    <label class="case"><input type="checkbox" value="Être bénévole">Être bénévole sur nos actions</label>
+    <label class="case"><input type="checkbox" value="Pas pour l'instant" id="pas-maintenant">Pas pour l'instant</label>
+  </div>
+  <div class="bloc" id="b-contact" hidden>
+    <span class="lbl" style="font-size:13px;color:var(--bleu)">Pour qu'un membre vous recontacte</span>
+    <div class="champ" id="c-tel" style="gap:4px">
+      <label class="lbl" for="tel" style="font-size:13px">Téléphone / WhatsApp <span class="req">*</span></label>
+      <input class="txt petit" id="tel" type="tel" inputmode="tel" autocomplete="tel" maxlength="25" placeholder="07 00 00 00 00">
+      <p class="erreur" hidden>Un numéro est nécessaire pour vous recontacter.</p>
+    </div>
+    <div class="champ" style="gap:4px">
+      <label class="lbl" for="email" style="font-size:13px">E-mail <span class="opt">(facultatif)</span></label>
+      <input class="txt petit" id="email" type="email" inputmode="email" autocomplete="email" maxlength="100" placeholder="vous@exemple.com">
+    </div>
+    <label class="consent" id="c-consent"><input type="checkbox" id="consent">J'accepte d'être recontacté(e) par les Lions Clubs d'Abidjan au sujet de mon choix.</label>
+    <p class="erreur" id="e-consent" hidden>Cochez cette case pour qu'on puisse vous recontacter.</p>
+  </div>
+</section>
+
+<!-- ========== 5. UN MOT ========== -->
+<section class="ecran" data-ecran="5" hidden>
+  <div>
+    <h1>Un dernier mot&nbsp;?</h1>
+    <p class="aide">Ce qui vous a plu, ce qu'on peut améliorer, une idée pour la 24ème édition… <b>(facultatif)</b></p>
+  </div>
+  <div class="puces">
+    <button type="button" class="puce" data-prefixe="Mon coup de cœur : ">+ Mon coup de cœur</button>
+    <button type="button" class="puce" data-prefixe="À améliorer : ">+ À améliorer</button>
+    <button type="button" class="puce" data-prefixe="Une idée : ">+ Une idée</button>
+  </div>
+  <div class="champ" style="gap:6px">
+    <label class="lbl" for="message">Votre message</label>
+    <textarea id="message" maxlength="1500" placeholder="Écrivez ici…"></textarea>
+  </div>
+  <p class="discret">
+    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+    Vos réponses restent internes aux Lions Clubs organisateurs.
+  </p>
+</section>
+
+<div class="actions" id="actions" hidden>
+  <button class="btn btn-or" type="button" id="suivant">Suivant
+    <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+  </button>
+</div>
+</form>
+
+<!-- ========== MERCI ========== -->
+<section id="merci" class="bleu" data-ecran="6" hidden>
+  <div class="rond" style="left:-90px;top:120px;width:200px;height:200px;border-width:30px" aria-hidden="true"></div>
+  <div class="marque">
+    <div class="marque-ligne"><img src="img/logo.webp" alt="Beaujolais Nouveau" width="84" height="37"><b>2.3</b></div>
+    <small>pour 2X plus d'impact</small>
+  </div>
+  <div class="merci-tete">
+    <div class="ok"><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#00338D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></div>
+    <h1 id="merci-titre">Merci&nbsp;!</h1>
+    <p class="petit" id="merci-etat">Vos réponses ont bien été envoyées.</p>
+    <p>Grâce à vous, chaque verre levé ce soir aide les jeunes filles et les enfants du foyer des <strong>Sœurs Servantes de Toupah</strong>.</p>
+  </div>
+  <div class="logos">
+    <span class="logos-titre">Le Gouverneur et les clubs organisateurs</span>
+    <div class="logos-grille" id="logos-clubs"></div>
+  </div>
+  <div class="logos sponsors" id="bloc-sponsors" hidden>
+    <span class="logos-titre">Nos sponsors</span>
+    <div class="logos-grille" id="logos-sponsors"></div>
+  </div>
+  <div class="merci-bas">
+    <a class="btn btn-or" id="lien-fb" href="https://www.facebook.com/collectedefondslionsclub" target="_blank" rel="noopener" style="height:52px;font-size:16px">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h-2.5A3.5 3.5 0 0 0 9 6.5V10H6.5v3.5H9V21h3.5v-7.5H15l.5-3.5h-3V7a1 1 0 0 1 1-1H15z"/></svg>
+      Suivre la collecte sur Facebook
+    </a>
+    <button class="lien-autre" type="button" id="nouvelle">Faire répondre une autre personne</button>
+    <p class="pied">Lions Clubs d'Abidjan · Aimons pour servir</p>
+  </div>
+</section>
+
+</div>
+
+<script>
+/* =====================================================================
+   RÉGLAGES — à modifier ici uniquement
+   ===================================================================== */
+var CONFIG = {
+  // Adresse de l'application Web Google Apps Script (voir le guide). Laisser vide = mode test.
+  scriptUrl: "",
+  // Logo du Gouverneur (ex. "img/gouverneur.webp"). Vide = emplacement réservé affiché.
+  gouverneurLogo: "img/gouverneur.webp",
+  // Clubs organisateurs, dans l'ordre d'affichage (Filao, initiateur, en premier).
+  clubs: [
+    { nom: "Filao",       logo: "img/filao.webp" },
+    { nom: "Frêne",       logo: "img/frene.webp" },
+    { nom: "Albizia",     logo: "img/albizia.webp" },
+    { nom: "Étimoé",      logo: "img/etimoe.webp" },
+    { nom: "Arc-en-ciel", logo: "img/arcenciel.webp" },
+    { nom: "Leo Ébène",   logo: "img/ebene.webp" }
+  ],
+  // Sponsors : ajouter { nom: "…", logo: "img/sponsor1.webp" }. Vide = bloc masqué.
+  sponsors: []
+};
+
+/* ===================================================================== */
+(function () {
+  "use strict";
+  var LIONS = ["Filao", "Frêne", "Albizia", "Étimoé", "Arc-en-ciel", "Autre"];
+  var LEOS = ["Leo Club Abidjan Ébène", "Autre"];
+  var HOTES = ["Filao", "Frêne", "Albizia", "Étimoé", "Arc-en-ciel", "Leo Ébène", "Autre", "Je ne sais pas"];
+  var CRITERES = [
+    ["accueil", "L’accueil", "Réception, placement"],
+    ["lieu", "Le lieu", "Espace Eden"],
+    ["nourriture", "La nourriture", "Qualité et service"],
+    ["vin", "Le vin", "Le Beaujolais Nouveau"],
+    ["ambiance", "L’ambiance", "Musique, déco, son et lumière"],
+    ["qualitePrix", "Le rapport qualité / prix", "Par rapport au billet"]
+  ];
+  var FILE = "bn23_file", BROUILLON = "bn23_brouillon";
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem(k) || "null"); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, JSON.stringify(v)); } catch (e) { return null; } }
+
+  var etat = nouvelEtat();
+  function nouvelEtat() { return { statut: "", recommandation: "", reviendra: "", connaitFonds: "", notes: {} }; }
+
+  /* ---- Construction des listes ---- */
+  function radios(id, nom, liste) {
+    var box = $("#" + id);
+    box.innerHTML = "";
+    liste.forEach(function (v) {
+      var l = document.createElement("label"); l.className = "radio";
+      var i = document.createElement("input"); i.type = "radio"; i.name = nom; i.value = v;
+      l.appendChild(i); l.appendChild(document.createTextNode(v)); box.appendChild(l);
+    });
+  }
+  radios("r-lion", "lionClub", LIONS);
+  radios("r-leo", "leoClub", LEOS);
+  radios("r-invite", "hoteClub", HOTES);
+
+  var SVG_ETOILE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.8 5.7 6.3.9-4.55 4.43 1.07 6.27L12 17.15 6.38 20.1l1.07-6.27L2.9 9.4l6.3-.9z"/></svg>';
+  var listeEt = $("#etoiles");
+  CRITERES.forEach(function (c) {
+    var row = document.createElement("div"); row.className = "ligne-note";
+    row.innerHTML = "<div><strong>" + c[1] + "</strong><span>" + c[2] + "</span></div>";
+    var st = document.createElement("div"); st.className = "etoiles"; st.setAttribute("role", "group"); st.setAttribute("aria-label", c[1]);
+    for (var k = 1; k <= 5; k++) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "etoile";
+      b.dataset.critere = c[0]; b.dataset.n = k; b.setAttribute("aria-label", c[1] + " : " + k + " sur 5"); b.setAttribute("aria-pressed", "false");
+      b.innerHTML = SVG_ETOILE; st.appendChild(b);
+    }
+    row.appendChild(st); listeEt.appendChild(row);
+  });
+  listeEt.addEventListener("click", function (e) {
+    var b = e.target.closest(".etoile"); if (!b) return;
+    var c = b.dataset.critere, n = +b.dataset.n;
+    etat.notes[c] = etat.notes[c] === n ? 0 : n;
+    peindreEtoiles(c); sauver();
+  });
+  function peindreEtoiles(c) {
+    $$('.etoile[data-critere="' + c + '"]').forEach(function (b) {
+      var on = +b.dataset.n <= (etat.notes[c] || 0);
+      b.classList.toggle("on", on); b.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+  }
+
+  var n10 = $("#notes10");
+  for (var i = 0; i <= 10; i++) {
+    var b = document.createElement("button"); b.type = "button"; b.className = "choix note"; b.dataset.v = String(i); b.textContent = i; b.setAttribute("aria-pressed", "false");
+    n10.appendChild(b);
+  }
+
+  /* ---- Choix uniques (boutons) ---- */
+  $$("[data-unique]").forEach(function (g) {
+    g.addEventListener("click", function (e) {
+      var b = e.target.closest(".choix"); if (!b) return;
+      var cle = g.dataset.unique;
+      etat[cle] = b.dataset.v;
+      $$(".choix", g).forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      if (cle === "statut") majStatut();
+      effacerErreur(g.closest(".champ"));
+      sauver();
+    });
+  });
+
+  function majStatut() {
+    var s = etat.statut;
+    $("#b-lion").hidden = s !== "Lion";
+    $("#b-leo").hidden = s !== "Leo";
+    $("#b-invite").hidden = s !== "Invité(e)";
+    $("#b-partenaire").hidden = s !== "Partenaire / Sponsor";
+  }
+  // Champs "Autre"
+  [["lionClub", "lion-autre"], ["leoClub", "leo-autre"], ["hoteClub", "invite-autre"]].forEach(function (p) {
+    $$('input[name="' + p[0] + '"]').forEach(function (r) {
+      r.addEventListener("change", function () {
+        var champ = $("#" + p[1]);
+        champ.hidden = r.value !== "Autre";
+        if (!champ.hidden) champ.focus();
+        effacerErreur(r.closest(".bloc")); sauver();
+      });
+    });
+  });
+
+  /* ---- Intérêts ---- */
+  var cases = $$("#interets input");
+  cases.forEach(function (c) {
+    c.addEventListener("change", function () {
+      if (c.id === "pas-maintenant" && c.checked) cases.forEach(function (x) { if (x !== c) x.checked = false; });
+      else if (c.checked) $("#pas-maintenant").checked = false;
+      majContact(); sauver();
+    });
+  });
+  function interets() { return cases.filter(function (c) { return c.checked && c.id !== "pas-maintenant"; }).map(function (c) { return c.value; }); }
+  function majContact() { $("#b-contact").hidden = interets().length === 0; }
+
+  /* ---- Puces message ---- */
+  $$(".puce").forEach(function (p) {
+    p.addEventListener("click", function () {
+      var t = $("#message"), pre = p.dataset.prefixe;
+      t.value = (t.value && !/\n$/.test(t.value) ? t.value + "\n" : t.value) + pre;
+      t.focus(); t.setSelectionRange(t.value.length, t.value.length); sauver();
+    });
+  });
+
+  /* ---- Navigation ---- */
+  var courant = 0;
+  function aller(n) {
+    courant = n;
+    $$("[data-ecran]").forEach(function (s) { s.hidden = +s.dataset.ecran !== n; });
+    var q = n >= 1 && n <= 5;
+    $("#entete").hidden = !q; $("#actions").hidden = !q;
+    if (q) {
+      $("#etape").textContent = "Étape " + n + " sur 5";
+      $("#barre").style.width = (n * 20) + "%";
+      var s = $("#suivant");
+      s.className = "btn " + (n === 5 ? "btn-bleu" : "btn-or");
+      s.firstChild.nodeValue = n === 5 ? "Envoyer mes réponses " : "Suivant ";
+    }
+    window.scrollTo(0, 0);
+    try { history.replaceState(null, "", n ? "#e" + n : location.pathname + location.search); } catch (e) {}
+  }
+  $$("[data-aller]").forEach(function (b) { b.addEventListener("click", function () { aller(+b.dataset.aller); }); });
+  $("#retour").addEventListener("click", function () { aller(Math.max(0, courant - 1)); });
+  $("#suivant").addEventListener("click", function () {
+    if (courant === 1 && !valider1()) return;
+    if (courant === 4 && !valider4()) return;
+    if (courant < 5) aller(courant + 1); else envoyer();
+  });
+
+  /* ---- Validation ---- */
+  function erreur(el, msg) { if (!el) return; el.classList.add("ko"); var p = $(".erreur", el); if (p) { if (msg) p.textContent = msg; p.hidden = false; } }
+  function effacerErreur(el) { if (!el) return; el.classList.remove("ko"); var p = $(".erreur", el); if (p) p.hidden = true; }
+  $("#nom").addEventListener("input", function () { effacerErreur($("#c-nom")); sauver(); });
+  ["invite-par", "invite-autre", "lion-autre", "leo-autre", "entreprise"].forEach(function (id) { $("#" + id).addEventListener("input", function () { effacerErreur(this.closest(".bloc")); sauver(); }); });
+  $("#tel").addEventListener("input", function () { effacerErreur($("#c-tel")); sauver(); });
+  $("#email").addEventListener("input", sauver);
+  $("#message").addEventListener("input", sauver);
+  $("#consent").addEventListener("change", function () { $("#e-consent").hidden = true; sauver(); });
+
+  function radioVal(n) { var r = $('input[name="' + n + '"]:checked'); return r ? r.value : ""; }
+  function valider1() {
+    var ok = true, premier = null;
+    if ($("#nom").value.trim().length < 2) { erreur($("#c-nom")); ok = false; premier = premier || $("#nom"); }
+    if (!etat.statut) { erreur($("#c-statut")); ok = false; premier = premier || $("#c-statut"); }
+    if (etat.statut === "Lion") {
+      var v = radioVal("lionClub");
+      if (!v || (v === "Autre" && !$("#lion-autre").value.trim())) { erreur($("#b-lion")); ok = false; premier = premier || $("#b-lion"); }
+    }
+    if (etat.statut === "Leo") {
+      var w = radioVal("leoClub");
+      if (!w || (w === "Autre" && !$("#leo-autre").value.trim())) { erreur($("#b-leo")); ok = false; premier = premier || $("#b-leo"); }
+    }
+    if (etat.statut === "Invité(e)") {
+      var h = radioVal("hoteClub");
+      var hOk = (h && h !== "Je ne sais pas" && !(h === "Autre" && !$("#invite-autre").value.trim())) || $("#invite-par").value.trim();
+      if (!hOk) { erreur($("#b-invite")); ok = false; premier = premier || $("#b-invite"); }
+    }
+    if (etat.statut === "Partenaire / Sponsor" && !$("#entreprise").value.trim()) { erreur($("#b-partenaire")); ok = false; premier = premier || $("#b-partenaire"); }
+    if (premier) premier.scrollIntoView({ behavior: "smooth", block: "center" });
+    return ok;
+  }
+  function valider4() {
+    if (!interets().length) return true;
+    var ok = true;
+    if ($("#tel").value.replace(/\D/g, "").length < 8) { erreur($("#c-tel")); ok = false; }
+    if (!$("#consent").checked) { $("#e-consent").hidden = false; ok = false; }
+    if (!ok) $("#b-contact").scrollIntoView({ behavior: "smooth", block: "center" });
+    return ok;
+  }
+
+  /* ---- Brouillon (si la page est rechargée) ---- */
+  function collecter() {
+    var s = etat.statut, club = "", clubAutre = "", hoteClub = "", hoteAutre = "";
+    if (s === "Lion") { club = radioVal("lionClub"); clubAutre = club === "Autre" ? $("#lion-autre").value.trim() : ""; }
+    if (s === "Leo") { club = radioVal("leoClub"); clubAutre = club === "Autre" ? $("#leo-autre").value.trim() : ""; }
+    if (s === "Invité(e)") { hoteClub = radioVal("hoteClub"); hoteAutre = hoteClub === "Autre" ? $("#invite-autre").value.trim() : ""; }
+    var it = interets();
+    return {
+      nom: $("#nom").value.trim(), statut: s,
+      club: club, clubAutre: clubAutre,
+      invitePar: s === "Invité(e)" ? $("#invite-par").value.trim() : "",
+      hoteClub: hoteClub, hoteClubAutre: hoteAutre,
+      entreprise: s === "Partenaire / Sponsor" ? $("#entreprise").value.trim() : "",
+      notes: etat.notes,
+      recommandation: etat.recommandation, reviendra: etat.reviendra, connaitFonds: etat.connaitFonds,
+      interets: it.length ? it : ($("#pas-maintenant").checked ? ["Pas pour l'instant"] : []),
+      telephone: it.length ? $("#tel").value.trim() : "",
+      email: it.length ? $("#email").value.trim() : "",
+      consentement: it.length ? $("#consent").checked : false,
+      message: $("#message").value.trim()
+    };
+  }
+  var tSauve;
+  function sauver() { clearTimeout(tSauve); tSauve = setTimeout(function () { store(BROUILLON, { d: collecter(), e: courant, t: Date.now() }); }, 300); }
+
+  function restaurer(b) {
+    var d = b.d;
+    $("#nom").value = d.nom || "";
+    function choisir(cle, v) { if (v === "" || v == null) return; var g = $('[data-unique="' + cle + '"]'); var x = $('.choix[data-v="' + String(v).replace(/"/g, '\\"') + '"]', g); if (x) x.click(); }
+    choisir("statut", d.statut); choisir("recommandation", d.recommandation); choisir("reviendra", d.reviendra); choisir("connaitFonds", d.connaitFonds);
+    function cocher(n, v, autreId, autreV) { var r = v && $('input[name="' + n + '"][value="' + v + '"]'); if (r) { r.checked = true; r.dispatchEvent(new Event("change")); if (autreId) $("#" + autreId).value = autreV || ""; } }
+    cocher("lionClub", d.statut === "Lion" ? d.club : "", "lion-autre", d.clubAutre);
+    cocher("leoClub", d.statut === "Leo" ? d.club : "", "leo-autre", d.clubAutre);
+    cocher("hoteClub", d.hoteClub, "invite-autre", d.hoteClubAutre);
+    $("#invite-par").value = d.invitePar || ""; $("#entreprise").value = d.entreprise || "";
+    etat.notes = d.notes || {}; CRITERES.forEach(function (c) { peindreEtoiles(c[0]); });
+    cases.forEach(function (c) { c.checked = (d.interets || []).indexOf(c.value) >= 0; });
+    majContact();
+    $("#tel").value = d.telephone || ""; $("#email").value = d.email || ""; $("#consent").checked = !!d.consentement;
+    $("#message").value = d.message || "";
+    aller(Math.min(Math.max(b.e || 1, 1), 5));
+  }
+
+  /* ---- Envoi + file d'attente hors ligne ---- */
+  function uid() { return Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10); }
+  function file() { return store(FILE) || []; }
+  var envoiEnCours = false;
+  function vider() {
+    if (envoiEnCours || !CONFIG.scriptUrl) return Promise.resolve();
+    var f = file(); if (!f.length) return Promise.resolve();
+    envoiEnCours = true;
+    var item = f[0];
+    return fetch(CONFIG.scriptUrl, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(item), keepalive: true })
+      .then(function () {
+        store(FILE, file().filter(function (x) { return x.id !== item.id; }));
+        envoiEnCours = false; majAttente(); return vider();
+      })
+      .catch(function () { envoiEnCours = false; majAttente(); setTimeout(vider, 8000); });
+  }
+  function majAttente() {
+    var reste = file().length;
+    var el = $("#merci-etat");
+    if (!CONFIG.scriptUrl) el.textContent = "Mode test : réponses gardées sur ce téléphone.";
+    else if (reste) el.textContent = "Envoi en cours… (connexion faible, vos réponses sont gardées)";
+    else el.textContent = "Vos réponses ont bien été envoyées.";
+  }
+  function envoyer() {
+    var d = collecter();
+    d.id = uid(); d.date = new Date().toISOString(); d.appareil = (navigator.userAgent || "").slice(0, 120);
+    var f = file(); f.push(d); store(FILE, f);
+    store(BROUILLON, null);
+    $("#merci-titre").textContent = d.nom ? "Merci, " + d.nom + "\u00a0!" : "Merci\u00a0!";
+    majAttente(); aller(6); vider().then(majAttente);
+  }
+  window.addEventListener("online", vider);
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) vider(); });
+
+  $("#nouvelle").addEventListener("click", function () {
+    $("#form").reset(); etat = nouvelEtat();
+    $$(".choix").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+    CRITERES.forEach(function (c) { peindreEtoiles(c[0]); });
+    ["lion-autre", "leo-autre", "invite-autre"].forEach(function (id) { $("#" + id).hidden = true; });
+    $$(".ko").forEach(effacerErreur); majStatut(); majContact();
+    aller(0);
+  });
+
+  /* ---- Logos ---- */
+  function logo(nom, src, alt) {
+    var d = document.createElement("div"); d.className = "logo";
+    if (src) { var im = new Image(); im.src = src; im.alt = alt; im.loading = "lazy"; im.decoding = "async"; d.appendChild(im); }
+    else { var v = document.createElement("div"); v.className = "logo-vide"; v.textContent = "[Logo du Gouverneur]"; d.appendChild(v); }
+    var s = document.createElement("span"); s.textContent = nom; d.appendChild(s); return d;
+  }
+  var lc = $("#logos-clubs");
+  lc.appendChild(logo("Gouverneur", CONFIG.gouverneurLogo, "Logo du Gouverneur"));
+  CONFIG.clubs.forEach(function (c) { lc.appendChild(logo(c.nom, c.logo, "Fanion " + c.nom)); });
+  if (CONFIG.sponsors.length) {
+    $("#bloc-sponsors").hidden = false;
+    CONFIG.sponsors.forEach(function (s) { var im = new Image(); im.src = s.logo; im.alt = s.nom; im.loading = "lazy"; $("#logos-sponsors").appendChild(im); });
+  }
+
+  /* ---- Démarrage ---- */
+  var b = store(BROUILLON);
+  if (b && b.d && Date.now() - b.t < 6 * 3600 * 1000 && (b.d.nom || b.d.statut)) restaurer(b); else aller(0);
+  vider();
+})();
+</script>
+</body>
+</html>
