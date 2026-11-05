@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tableau de bord – Beaujolais Nouveau 2.3</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#00338D">
+<link rel="icon" href="img/logo.webp" type="image/webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bleu:#00338D; --bleu2:#0A44A8; --or:#EBB700;
+  --serie:#2F5FBF; --pro:#2F5FBF; --pas:#A3ACBF; --det:#C25E00;
+  --fond:#F3F5FA; --carte:#FFFFFF; --texte:#0E1B3D; --gris:#4A5878; --muet:#6B7790; --bord:#DCE3F2; --piste:#E8EDF6;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--fond);color:var(--texte);font-variant-numeric:tabular-nums}
+[hidden]{display:none!important}
+button{font:inherit;cursor:pointer}
+
+/* En-tête */
+.tete{background:var(--bleu);color:#fff;padding:18px clamp(16px,4vw,40px);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.marque{display:flex;align-items:center;gap:14px}
+.marque img{width:120px;height:auto}
+.marque b{font-size:30px;font-weight:800;color:var(--or);line-height:1}
+.titre h1{margin:0;font-size:20px;font-weight:700;line-height:1.25}
+.titre p{margin:2px 0 0;font-size:13px;color:#D6E0F5}
+.outils{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.maj{font-size:12px;color:#D6E0F5}
+.b{height:42px;padding:0 16px;border-radius:12px;border:0;font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:8px}
+.b-or{background:var(--or);color:var(--bleu)}
+.b-ghost{background:var(--bleu2);color:#fff}
+
+main{max-width:1240px;margin:0 auto;padding:22px clamp(14px,3vw,32px) 48px;display:flex;flex-direction:column;gap:18px}
+
+/* Accès */
+.acces{max-width:420px;margin:60px auto;background:var(--carte);border:1px solid var(--bord);border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:14px}
+.acces h2{margin:0;font-size:22px;color:var(--bleu)}
+.acces p{margin:0;font-size:14px;color:var(--gris);line-height:1.5}
+.acces input{height:50px;border:2px solid var(--bord);border-radius:14px;padding:0 16px;font:inherit;font-size:17px;letter-spacing:.08em;text-transform:uppercase;outline:none}
+.acces input:focus{border-color:var(--bleu)}
+.err{color:#B3261E;font-size:13px;margin:0}
+
+/* Tuiles */
+.tuiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.tuile{background:var(--carte);border:1px solid var(--bord);border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:4px}
+.tuile .lab{font-size:13px;font-weight:600;color:var(--gris)}
+.tuile .val{font-size:38px;font-weight:800;color:var(--bleu);line-height:1.1}
+.tuile .val small{font-size:18px;font-weight:600;color:var(--muet)}
+.tuile .det{font-size:12px;color:var(--muet)}
+
+/* Cartes */
+.grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:18px}
+.carte{background:var(--carte);border:1px solid var(--bord);border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;gap:14px;break-inside:avoid}
+.carte h2{margin:0;font-size:16px;font-weight:700;color:var(--texte)}
+.carte .sous{margin:-10px 0 0;font-size:12.5px;color:var(--muet)}
+.vide{font-size:13px;color:var(--muet);margin:0}
+
+/* Barres horizontales */
+.barres{display:flex;flex-direction:column;gap:10px}
+.barre{display:grid;grid-template-columns:minmax(120px,42%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.barre .nom{color:var(--texte);font-weight:500;line-height:1.3}
+.barre .piste{height:14px;background:var(--piste);border-radius:4px;position:relative}
+.barre .rempli{height:100%;background:var(--serie);border-radius:4px;min-width:2px;transition:width .4s}
+.barre .chiffre{font-weight:600;color:var(--texte);min-width:64px;text-align:right}
+.barre .chiffre span{font-weight:400;color:var(--muet)}
+
+/* NPS */
+.nps-score{display:flex;align-items:baseline;gap:10px}
+.nps-score b{font-size:40px;font-weight:800;color:var(--bleu);line-height:1}
+.nps-score span{font-size:13px;color:var(--gris)}
+.empile{display:flex;height:30px;border-radius:6px;overflow:hidden;gap:2px;background:#fff}
+.empile div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:12.5px;font-weight:700;min-width:0}
+.empile .pas{color:var(--texte)}
+.legende{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--gris)}
+.legende i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+/* Colonnes (par heure) */
+.colonnes{display:flex;align-items:flex-end;gap:6px;height:150px;padding-top:18px}
+.col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%;min-width:0}
+.col .v{font-size:11.5px;font-weight:600}
+.col .c{width:100%;max-width:44px;background:var(--serie);border-radius:4px 4px 0 0;min-height:2px}
+.col .h{font-size:11.5px;color:var(--muet)}
+
+/* Messages */
+.messages{display:flex;flex-direction:column;gap:10px;max-height:460px;overflow:auto;padding-right:4px}
+.msg{border:1px solid var(--bord);border-radius:14px;padding:10px 14px;font-size:14px;line-height:1.5;background:#FAFBFE}
+.msg time{display:block;font-size:11.5px;color:var(--muet);margin-bottom:2px}
+
+@media (max-width:560px){.marque img{width:84px}.marque b{font-size:22px}.titre h1{font-size:16px}.titre p{font-size:12px}.tuile .val{font-size:30px}.grille{grid-template-columns:1fr}}
+.pied{font-size:12px;color:var(--muet);text-align:center}
+.entete-impression{display:none}
+
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff;font-size:12px}
+  .tete,.acces,.no-print{display:none!important}
+  .entete-impression{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--bleu);padding-bottom:8px;margin-bottom:6px}
+  .entete-impression img{width:110px}
+  .entete-impression h1{margin:0;font-size:18px;color:var(--bleu)}
+  .entete-impression p{margin:2px 0 0;font-size:11px;color:var(--gris)}
+  main{padding:0;max-width:none;gap:10px}
+  .tuiles{grid-template-columns:repeat(5,1fr);gap:8px}
+  .tuile{padding:10px}
+  .tuile .val{font-size:26px}
+  .grille{grid-template-columns:1fr 1fr;gap:10px}
+  .carte{padding:12px 14px;gap:10px;border-color:#C9D2E6}
+  .messages{max-height:none;overflow:visible;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .msg{padding:6px 10px;font-size:11px}
+  .colonnes{height:110px}
+  .carte.messages-carte{grid-column:1/-1}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<header class="tete">
+  <div class="marque">
+    <img src="img/logo.webp" alt="Beaujolais Nouveau" width="120" height="52"><b>2.3</b>
+    <div class="titre">
+      <h1>Tableau de bord du questionnaire</h1>
+      <p>23ème édition · 28 novembre 2026 · Espace Eden</p>
+    </div>
+  </div>
+  <div class="outils" id="outils" hidden>
+    <span class="maj" id="maj" aria-live="polite"></span>
+    <button class="b b-ghost" id="actualiser" type="button">
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>Actualiser
+    </button>
+    <button class="b b-or" id="imprimer" type="button">
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>Compte rendu (PDF)
+    </button>
+  </div>
+</header>
+
+<section class="acces" id="acces">
+  <h2>Accès réservé</h2>
+  <p>Ce tableau de bord est réservé au bureau d'organisation. Entrez le code d'accès qui vous a été communiqué.</p>
+  <label for="code" style="font-size:14px;font-weight:600">Code d'accès</label>
+  <input id="code" type="text" autocomplete="off" spellcheck="false" placeholder="BN23-XXXXX">
+  <p class="err" id="err" hidden></p>
+  <button class="b b-or" id="entrer" type="button" style="height:50px;justify-content:center;font-size:16px">Voir les résultats</button>
+</section>
+
+<main id="tableau" hidden>
+  <div class="entete-impression">
+    <div>
+      <h1>Compte rendu – Questionnaire Beaujolais Nouveau 2.3</h1>
+      <p>23ème édition · 28 novembre 2026 · Espace Eden · « pour 2X plus d'impact » · <span id="date-impression"></span></p>
+    </div>
+    <img src="img/logo.webp" alt="Beaujolais Nouveau">
+  </div>
+
+  <div class="tuiles">
+    <div class="tuile"><span class="lab">Répondants</span><span class="val" id="k-total">–</span><span class="det" id="k-total-d"></span></div>
+    <div class="tuile"><span class="lab">Note globale de la soirée</span><span class="val" id="k-moy">–</span><span class="det">moyenne des 6 critères</span></div>
+    <div class="tuile"><span class="lab">Recommandation (NPS)</span><span class="val" id="k-nps">–</span><span class="det" id="k-nps-d"></span></div>
+    <div class="tuile"><span class="lab">Reviendront l'an prochain</span><span class="val" id="k-rev">–</span><span class="det" id="k-rev-d"></span></div>
+    <div class="tuile"><span class="lab">Contacts à suivre</span><span class="val" id="k-con">–</span><span class="det">adhésion, don, sponsoring, bénévolat</span></div>
+  </div>
+
+  <div class="grille">
+    <section class="carte">
+      <h2>Satisfaction par critère</h2>
+      <p class="sous">Note moyenne sur 5</p>
+      <div class="barres" id="g-notes"></div>
+    </section>
+
+    <section class="carte">
+      <h2>Recommanderaient la soirée à un proche</h2>
+      <p class="sous">Note de 0 à 10 · NPS = % de promoteurs − % de détracteurs</p>
+      <div class="nps-score"><b id="nps-big">–</b><span id="nps-moy"></span></div>
+      <div class="empile" id="nps-barre" role="img" aria-label="Répartition promoteurs, passifs, détracteurs"></div>
+      <div class="legende">
+        <span><i style="background:var(--pro)"></i>Promoteurs (9-10)</span>
+        <span><i style="background:var(--pas)"></i>Passifs (7-8)</span>
+        <span><i style="background:var(--det)"></i>Détracteurs (0-6)</span>
+      </div>
+    </section>
+
+    <section class="carte">
+      <h2>Qui a répondu ?</h2>
+      <div class="barres" id="g-statuts"></div>
+    </section>
+
+    <section class="carte">
+      <h2>Aller plus loin</h2>
+      <p class="sous">Nombre de personnes intéressées (plusieurs choix possibles)</p>
+      <div class="barres" id="g-interets"></div>
+    </section>
+
+    <section class="carte">
+      <h2>Membres présents par club</h2>
+      <p class="sous">Lions et Leo ayant répondu</p>
+      <div class="barres" id="g-clubs"></div>
+    </section>
+
+    <section class="carte">
+      <h2>Invités par club</h2>
+      <p class="sous">Club de la personne qui a invité</p>
+      <div class="barres" id="g-invites"></div>
+    </section>
+
+    <section class="carte">
+      <h2>Le message de la collecte passe-t-il ?</h2>
+      <p class="sous">« Savez-vous à quoi servent les fonds récoltés ? »</p>
+      <div class="barres" id="g-fonds"></div>
+      <h2 style="margin-top:6px">Reviendront l'an prochain ?</h2>
+      <div class="barres" id="g-rev"></div>
+    </section>
+
+    <section class="carte">
+      <h2>Réponses au fil de la soirée</h2>
+      <p class="sous">Nombre de questionnaires par heure</p>
+      <div class="colonnes" id="g-heures" role="img" aria-label="Réponses par heure"></div>
+    </section>
+
+    <section class="carte messages-carte" style="grid-column:1/-1">
+      <h2>Ce qu'ils en disent</h2>
+      <p class="sous" id="msg-n">Messages laissés à la dernière étape (sans les noms)</p>
+      <div class="messages" id="g-messages"></div>
+    </section>
+  </div>
+
+  <p class="pied">Lions Clubs d'Abidjan · Aimons pour servir · Les noms, téléphones et e-mails restent dans le Google Sheet et ne sont jamais affichés ici.</p>
+</main>
+
+<script>
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzL0B7ce73WinUXTjMQ66tUl5xBBl_xf-xAlOp7bqAQkpnGeStveSClezoFN1EY__Ox/exec";
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var CLE = "bn23_code_tableau";
+  var LIB = { accueil: "L’accueil", lieu: "Le lieu (Espace Eden)", nourriture: "La nourriture", vin: "Le vin", ambiance: "L’ambiance", qualitePrix: "Qualité / prix" };
+  var ORDRE_CLUBS = ["Filao", "Frêne", "Albizia", "Étimoé", "Arc-en-ciel", "Leo Ébène"];
+  var ORDRE_STATUTS = ["Lion", "Leo", "Invité(e)", "Partenaire / Sponsor"];
+  var ORDRE_INTERETS = ["Rejoindre le Lions Club", "Faire un don", "Devenir partenaire / sponsor", "Être bénévole", "Pas pour l'instant"];
+  var code = "", minuteur = null;
+
+  function lire(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function ecrire(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} }
+  var fr1 = function (x) { return x.toLocaleString("fr-FR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }); };
+  var pct = function (a, b) { return b ? Math.round(a * 100 / b) : 0; };
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+
+  function trier(obj, ordre) {
+    var cles = Object.keys(obj || {});
+    var connus = (ordre || []).filter(function (k) { return obj[k]; });
+    var autres = cles.filter(function (k) { return connus.indexOf(k) < 0; }).sort(function (a, b) { return obj[b] - obj[a]; });
+    return connus.concat(autres).map(function (k) { return [k, obj[k]]; });
+  }
+
+  // Barres : valeur absolue + pourcentage du total ; max = plus grande valeur (ou max fixe)
+  function barres(id, paires, opts) {
+    opts = opts || {};
+    var el = $("#" + id);
+    if (!paires.length) { el.innerHTML = '<p class="vide">Pas encore de réponse.</p>'; return; }
+    var max = opts.max || Math.max.apply(null, paires.map(function (p) { return p[1]; })) || 1;
+    var total = opts.total;
+    el.innerHTML = paires.map(function (p) {
+      var w = Math.max(0, Math.min(100, p[1] * 100 / max));
+      var txt = opts.format ? opts.format(p) : (p[1] + (total ? ' <span>· ' + pct(p[1], total) + ' %</span>' : ''));
+      var tip = opts.tip ? opts.tip(p) : (p[0] + " : " + p[1] + (total ? " (" + pct(p[1], total) + " %)" : ""));
+      return '<div class="barre" title="' + esc(tip) + '"><span class="nom">' + esc(p[0]) + '</span><div class="piste"><div class="rempli" style="width:' + w + '%"></div></div><span class="chiffre">' + txt + '</span></div>';
+    }).join("");
+  }
+
+  function afficher(s) {
+    var t = s.total;
+    $("#k-total").textContent = t;
+    $("#k-total-d").textContent = t ? (s.statuts["Invité(e)"] || 0) + " invité(s) · " + ((s.statuts["Lion"] || 0) + (s.statuts["Leo"] || 0)) + " membre(s)" : "en attente des premières réponses";
+
+    // Notes
+    var crit = Object.keys(LIB).map(function (k) { var o = s.notes[k] || { n: 0, somme: 0 }; return [LIB[k], o.n ? o.somme / o.n : 0, o.n]; });
+    var notees = crit.filter(function (c) { return c[2]; });
+    $("#k-moy").innerHTML = notees.length ? fr1(notees.reduce(function (a, c) { return a + c[1]; }, 0) / notees.length) + "<small> /5</small>" : "–";
+    barres("g-notes", notees.length ? crit : [], {
+      max: 5,
+      format: function (p) { return p[2] ? fr1(p[1]) + ' <span>/5</span>' : '<span>–</span>'; },
+      tip: function (p) { return p[0] + " : " + (p[2] ? fr1(p[1]) + "/5 sur " + p[2] + " note(s)" : "pas de note"); }
+    });
+
+    // NPS
+    var r = s.reco, n = r.n;
+    var nps = n ? Math.round((r.promoteurs - r.detracteurs) * 100 / n) : null;
+    $("#k-nps").textContent = nps === null ? "–" : (nps > 0 ? "+" : "") + nps;
+    $("#k-nps-d").textContent = n ? "sur " + n + " réponse(s) · moyenne " + fr1(r.somme / n) + "/10" : "pas encore de note";
+    $("#nps-big").textContent = nps === null ? "–" : (nps > 0 ? "+" : "") + nps;
+    $("#nps-moy").textContent = n ? "Note moyenne : " + fr1(r.somme / n) + "/10 · " + n + " réponse(s)" : "";
+    var seg = [["pro", r.promoteurs, "Promoteurs"], ["pas", r.passifs, "Passifs"], ["det", r.detracteurs, "Détracteurs"]];
+    $("#nps-barre").innerHTML = n ? seg.filter(function (x) { return x[1]; }).map(function (x) {
+      var p = pct(x[1], n);
+      return '<div class="' + x[0] + '" style="flex:' + x[1] + ';background:var(--' + x[0] + ')" title="' + x[2] + ' : ' + x[1] + ' (' + p + ' %)">' + (p >= 8 ? p + " %" : "") + '</div>';
+    }).join("") : '<div style="flex:1;background:var(--piste)"></div>';
+    $("#nps-barre").setAttribute("aria-label", n ? seg.map(function (x) { return x[2] + " " + pct(x[1], n) + " %"; }).join(", ") : "Pas encore de note");
+
+    // Reviendra
+    var rv = s.reviendra || {}, rvT = (rv["Oui"] || 0) + (rv["Peut-être"] || 0) + (rv["Non"] || 0);
+    $("#k-rev").innerHTML = rvT ? pct(rv["Oui"] || 0, rvT) + "<small> %</small>" : "–";
+    $("#k-rev-d").textContent = rvT ? "+ " + pct(rv["Peut-être"] || 0, rvT) + " % « peut-être »" : "";
+    barres("g-rev", rvT ? trier(rv, ["Oui", "Peut-être", "Non"]) : [], { total: rvT, max: rvT });
+
+    $("#k-con").textContent = s.contacts;
+    barres("g-statuts", trier(s.statuts, ORDRE_STATUTS), { total: t, max: t });
+    barres("g-interets", trier(s.interets, ORDRE_INTERETS), { total: t, max: t });
+    barres("g-clubs", trier(s.clubsLions, ORDRE_CLUBS));
+    barres("g-invites", trier(s.invitesParClub, ORDRE_CLUBS.concat(["Autre", "Je ne sais pas"])));
+    var cf = s.connaitFonds || {}, cfT = (cf["Oui"] || 0) + (cf["Pas vraiment"] || 0);
+    barres("g-fonds", cfT ? trier(cf, ["Oui", "Pas vraiment"]) : [], { total: cfT, max: cfT });
+
+    // Heures
+    var h = Object.keys(s.parHeure || {}).sort();
+    var hmax = Math.max.apply(null, h.map(function (k) { return s.parHeure[k]; }).concat([1]));
+    $("#g-heures").innerHTML = h.length ? h.map(function (k) {
+      var v = s.parHeure[k];
+      return '<div class="col" title="' + k + ' : ' + v + ' réponse(s)"><span class="v">' + v + '</span><div class="c" style="height:' + Math.max(2, v * 100 / hmax) + '%"></div><span class="h">' + k + '</span></div>';
+    }).join("") : '<p class="vide">Pas encore de réponse.</p>';
+    $("#g-heures").setAttribute("aria-label", h.map(function (k) { return k + " : " + s.parHeure[k]; }).join(", ") || "Pas encore de réponse");
+
+    // Messages
+    var m = s.messages || [];
+    $("#msg-n").textContent = m.length + " message(s) laissé(s) à la dernière étape · les plus récents d'abord · sans les noms";
+    $("#g-messages").innerHTML = m.length ? m.map(function (x) { return '<div class="msg"><time>' + esc(x.date) + '</time>' + esc(x.texte).replace(/\n/g, "<br>") + '</div>'; }).join("") : '<p class="vide">Pas encore de message.</p>';
+
+    var d = new Date(s.maj || Date.now());
+    $("#maj").textContent = "Mis à jour à " + d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+    $("#date-impression").textContent = "établi le " + d.toLocaleDateString("fr-FR") + " à " + d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }) + " · " + t + " répondant(s)";
+  }
+
+  function charger(silencieux) {
+    if (!silencieux) $("#maj").textContent = "Chargement…";
+    return fetch(SCRIPT_URL + "?code=" + encodeURIComponent(code) + "&t=" + Date.now())
+      .then(function (r) { return r.json(); })
+      .then(function (s) {
+        if (!s.ok) {
+          if (s.erreur === "code") { ecrire(CLE, null); montrerAcces("Code incorrect. Vérifiez-le et réessayez."); }
+          else $("#maj").textContent = "Erreur du service, réessayez.";
+          return;
+        }
+        ecrire(CLE, code);
+        $("#acces").hidden = true; $("#tableau").hidden = false; $("#outils").hidden = false;
+        afficher(s);
+      })
+      .catch(function () {
+        if ($("#tableau").hidden) montrerAcces("Connexion impossible. Vérifiez le réseau et réessayez.");
+        else $("#maj").textContent = "Hors ligne – nouvel essai dans 1 min";
+      });
+  }
+
+  function montrerAcces(msg) {
+    $("#acces").hidden = false; $("#tableau").hidden = true; $("#outils").hidden = true;
+    var e = $("#err"); e.textContent = msg || ""; e.hidden = !msg;
+    $("#entrer").disabled = false; $("#entrer").textContent = "Voir les résultats";
+  }
+
+  function entrer() {
+    code = $("#code").value.trim().toUpperCase();
+    if (!code) { montrerAcces("Entrez le code d'accès."); return; }
+    $("#entrer").disabled = true; $("#entrer").textContent = "Vérification…";
+    charger().then(demarrerMinuteur);
+  }
+  function demarrerMinuteur() {
+    clearInterval(minuteur);
+    minuteur = setInterval(function () { if (!document.hidden && !$("#tableau").hidden) charger(true); }, 60000);
+  }
+
+  $("#entrer").addEventListener("click", entrer);
+  $("#code").addEventListener("keydown", function (e) { if (e.key === "Enter") entrer(); });
+  $("#actualiser").addEventListener("click", function () { charger(); });
+  $("#imprimer").addEventListener("click", function () { window.print(); });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden && code && !$("#tableau").hidden) charger(true); });
+
+  // Code transmis dans le lien (…/tableau-de-bord.html#BN23-XXXXX) ou mémorisé
+  var depuisLien = decodeURIComponent((location.hash || "").slice(1)).trim();
+  if (depuisLien) { try { history.replaceState(null, "", location.pathname); } catch (e) {} }
+  var memo = depuisLien || lire(CLE);
+  if (memo) { $("#code").value = memo; entrer(); } else montrerAcces();
+})();
+</script>
+</body>
+</html>
