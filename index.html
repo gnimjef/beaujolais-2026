@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Beaujolais Nouveau 2.3 – Votre avis compte</title>
-<meta name="description" content="Questionnaire de la 23ème édition du Beaujolais Nouveau des Lions Clubs d'Abidjan.">
+<meta name="description" content="Questionnaire de la 23ème édition du Beaujolais Nouveau – Lions Club International.">
 <meta name="theme-color" content="#00338D">
 <meta name="robots" content="noindex">
 <link rel="icon" href="img/logo.webp" type="image/webp">
@@ -43,6 +43,11 @@ h1{margin:0;font-weight:800}
 .meta{display:flex;justify-content:center;gap:18px;font-size:13px;color:var(--clair)}
 .meta span{display:flex;align-items:center;gap:6px}
 .pied{margin:4px 0 0;text-align:center;font-size:12px;color:#B9C8EA}
+.signature{margin:4px 0 0;text-align:center;line-height:1.45}
+.signature b{display:block;font-size:14px;font-weight:700;letter-spacing:.04em;color:#fff;text-transform:uppercase}
+.signature span{display:block;font-size:13.5px;font-style:italic;color:var(--clair)}
+.signature em{font-style:italic;font-weight:700;color:var(--or)}
+.edition{margin:0;font-size:30px;font-weight:800;line-height:1.1;color:var(--or)}
 
 /* Boutons */
 .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:56px;border:0;border-radius:16px;font-size:17px;font-weight:700;cursor:pointer;text-decoration:none}
@@ -140,7 +145,9 @@ textarea{min-height:200px;border:2px solid var(--bord);border-radius:16px;paddin
 .logo span{font-size:11px;font-weight:600;color:var(--texte);text-align:center;line-height:1.2}
 .logo-vide{height:66px;width:100%;border:1.5px dashed var(--bleu);border-radius:12px;background:#E8EEFB;display:flex;align-items:center;justify-content:center;text-align:center;font-size:10px;font-weight:600;line-height:1.3;color:var(--bleu);padding:4px}
 .sponsor-vide{width:64px;height:48px}
-.sponsors .logos-grille img{height:48px;width:auto;max-width:120px;object-fit:contain}
+.sponsors .logos-grille{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.partenaire{height:58px;border:1px solid var(--bord2);border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;padding:6px}
+.partenaire img{max-height:100%;max-width:100%;width:auto;height:auto;object-fit:contain}
 .merci-bas{margin-top:auto;display:flex;flex-direction:column;gap:10px;position:relative}
 .lien-autre{background:none;border:1.5px solid #6F8DD0;color:#fff;height:48px;border-radius:14px;font-size:15px;font-weight:600;cursor:pointer}
 .attente{font-size:12px;color:var(--or);text-align:center;margin:0}
@@ -155,16 +162,15 @@ textarea{min-height:200px;border:2px solid var(--bord);border-radius:16px;paddin
   <div class="rond" style="right:-90px;top:-90px;width:260px;height:260px" aria-hidden="true"></div>
   <div class="rond" style="left:-70px;bottom:120px;width:160px;height:160px;border-width:24px" aria-hidden="true"></div>
   <div class="badge-ligne">
-    <span class="badge">23ème édition</span>
-    <span class="date">28 nov. 2026 · Espace Eden</span>
+    <span class="date">Samedi 28 nov. 2026 · Espace Eden</span>
   </div>
   <div class="accueil-centre">
     <img src="img/logo.webp" alt="Beaujolais Nouveau" width="300" height="130">
     <div>
-      <p class="theme-titre">Beaujolais Nouveau 2.3</p>
-      <p class="theme-sous">pour 2X plus d'impact</p>
+      <p class="edition">23ème édition</p>
+      <p class="theme-sous">Beaujolais Nouveau 2.3 · pour 2 fois plus d'impact</p>
       <h1>Votre avis compte&nbsp;!</h1>
-      <p class="intro">Merci d'être avec nous ce soir. En 2 minutes, aidez-nous à faire encore mieux l'an prochain… et découvrez comment aller plus loin à nos côtés.</p>
+      <p class="intro">Merci d'être avec nous à cet évènement. En 2 minutes, aidez-nous à faire encore mieux l'an prochain… et découvrez comment aller plus loin à nos côtés.</p>
     </div>
   </div>
   <div style="display:flex;flex-direction:column;gap:14px;position:relative">
@@ -175,7 +181,7 @@ textarea{min-height:200px;border:2px solid var(--bord);border-radius:16px;paddin
       <span><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>≈ 2 minutes</span>
       <span><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>5 étapes</span>
     </div>
-    <p class="pied">Lions Clubs d'Abidjan · Aimons pour servir</p>
+    <p class="signature"><b>Lions Club International</b><span>« <em>L'amitié, la vraie</em> au cœur du service Lions »</span></p>
   </div>
 </section>
 
@@ -187,7 +193,7 @@ textarea{min-height:200px;border:2px solid var(--bord);border-radius:16px;paddin
     </button>
     <div class="marque">
       <div class="marque-ligne"><img src="img/logo.webp" alt="Beaujolais Nouveau" width="84" height="37"><b>2.3</b></div>
-      <small>pour 2X plus d'impact</small>
+      <small>23ème édition · pour 2 fois plus d'impact</small>
     </div>
   </div>
   <div class="progres">
@@ -256,10 +262,10 @@ textarea{min-height:200px;border:2px solid var(--bord);border-radius:16px;paddin
   </div>
 </section>
 
-<!-- ========== 2. SOIRÉE ========== -->
+<!-- ========== 2. ÉVÈNEMENT ========== -->
 <section class="ecran" data-ecran="2" hidden>
   <div>
-    <h1>Votre soirée</h1>
+    <h1>Votre évènement</h1>
     <p class="aide">Touchez les étoiles : 1 = décevant, 5 = excellent.</p>
   </div>
   <div class="etoiles-liste" id="etoiles"></div>
@@ -269,7 +275,7 @@ textarea{min-height:200px;border:2px solid var(--bord);border-radius:16px;paddin
 <section class="ecran" data-ecran="3" hidden>
   <h1>Votre bilan</h1>
   <div class="champ">
-    <span class="lbl" id="l-reco">Sur 10, recommanderiez-vous cette soirée à un proche&nbsp;?</span>
+    <span class="lbl" id="l-reco">Sur 10, recommanderiez-vous cet évènement à un proche&nbsp;?</span>
     <div class="grille g6" role="group" aria-labelledby="l-reco" data-unique="recommandation" id="notes10"></div>
     <div class="legende"><span>0 = pas du tout</span><span>10 = absolument</span></div>
   </div>
@@ -282,15 +288,15 @@ textarea{min-height:200px;border:2px solid var(--bord);border-radius:16px;paddin
     </div>
   </div>
   <div class="champ">
-    <span class="lbl" id="l-fonds">Savez-vous à quoi servent les fonds récoltés ce soir&nbsp;?</span>
+    <span class="lbl" id="l-fonds">Savez-vous à quoi servent les fonds récoltés lors de cet évènement&nbsp;?</span>
     <div class="grille g2" role="group" aria-labelledby="l-fonds" data-unique="connaitFonds">
       <button type="button" class="choix" data-v="Oui" aria-pressed="false">Oui</button>
       <button type="button" class="choix" data-v="Pas vraiment" aria-pressed="false">Pas vraiment</button>
     </div>
   </div>
-  <div class="impact">
+  <div class="impact" id="impact" hidden>
     <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#00338D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg>
-    <p><strong>Votre soirée a un impact.</strong> Les fonds soutiennent le centre social et le centre féminin des Sœurs Servantes de Toupah : scolarité des filles, vivres pour les enfants malnutris, médicaments et équipements.</p>
+    <p><strong>Cet évènement a un impact.</strong> Les fonds soutiennent le centre social et le centre féminin des Sœurs Servantes de Marie de Toupah : scolarité des filles, vivres pour les enfants malnutris, médicaments et équipements.</p>
   </div>
 </section>
 
@@ -305,7 +311,6 @@ textarea{min-height:200px;border:2px solid var(--bord);border-radius:16px;paddin
     <label class="case"><input type="checkbox" value="Faire un don">Faire un don</label>
     <label class="case"><input type="checkbox" value="Devenir partenaire / sponsor">Devenir partenaire / sponsor</label>
     <label class="case"><input type="checkbox" value="Être bénévole">Être bénévole sur nos actions</label>
-    <label class="case"><input type="checkbox" value="Pas pour l'instant" id="pas-maintenant">Pas pour l'instant</label>
   </div>
   <div class="bloc" id="b-contact" hidden>
     <span class="lbl" style="font-size:13px;color:var(--bleu)">Pour qu'un membre vous recontacte</span>
@@ -356,13 +361,13 @@ textarea{min-height:200px;border:2px solid var(--bord);border-radius:16px;paddin
   <div class="rond" style="left:-90px;top:120px;width:200px;height:200px;border-width:30px" aria-hidden="true"></div>
   <div class="marque">
     <div class="marque-ligne"><img src="img/logo.webp" alt="Beaujolais Nouveau" width="84" height="37"><b>2.3</b></div>
-    <small>pour 2X plus d'impact</small>
+    <small>23ème édition · pour 2 fois plus d'impact</small>
   </div>
   <div class="merci-tete">
     <div class="ok"><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#00338D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></div>
     <h1 id="merci-titre">Merci&nbsp;!</h1>
     <p class="petit" id="merci-etat">Vos réponses ont bien été envoyées.</p>
-    <p>Grâce à vous, chaque verre levé ce soir aide les jeunes filles et les enfants du foyer des <strong>Sœurs Servantes de Toupah</strong>.</p>
+    <p>Grâce à vous, avec les <strong>Sœurs Servantes de Marie de Toupah</strong>, nous sauvons des vies.</p>
   </div>
   <div class="logos">
     <span class="logos-titre">Le Gouverneur et les clubs organisateurs</span>
@@ -378,7 +383,7 @@ textarea{min-height:200px;border:2px solid var(--bord);border-radius:16px;paddin
       Suivre la collecte sur Facebook
     </a>
     <button class="lien-autre" type="button" id="nouvelle">Faire répondre une autre personne</button>
-    <p class="pied">Lions Clubs d'Abidjan · Aimons pour servir</p>
+    <p class="signature"><b>Lions Club International</b><span>« <em>L'amitié, la vraie</em> au cœur du service Lions »</span></p>
   </div>
 </section>
 
@@ -393,17 +398,27 @@ var CONFIG = {
   scriptUrl: "https://script.google.com/macros/s/AKfycbzL0B7ce73WinUXTjMQ66tUl5xBBl_xf-xAlOp7bqAQkpnGeStveSClezoFN1EY__Ox/exec",
   // Logo du Gouverneur (ex. "img/gouverneur.webp"). Vide = emplacement réservé affiché.
   gouverneurLogo: "img/gouverneur.webp",
-  // Clubs organisateurs, dans l'ordre d'affichage (Filao, initiateur, en premier).
+  // Clubs organisateurs, dans l'ordre d'affichage (après le Gouverneur).
   clubs: [
     { nom: "Filao",       logo: "img/filao.webp" },
+    { nom: "Arc-en-ciel", logo: "img/arcenciel.webp" },
+    { nom: "Étimoé",      logo: "img/etimoe.webp" },
     { nom: "Frêne",       logo: "img/frene.webp" },
     { nom: "Albizia",     logo: "img/albizia.webp" },
-    { nom: "Étimoé",      logo: "img/etimoe.webp" },
-    { nom: "Arc-en-ciel", logo: "img/arcenciel.webp" },
     { nom: "Leo Ébène",   logo: "img/ebene.webp" }
   ],
-  // Sponsors : ajouter { nom: "…", logo: "img/sponsor1.webp" }. Vide = bloc masqué.
-  sponsors: [],
+  // Partenaires : { nom: "…", logo: "img/partenaires/xxx.webp" }. Vide = bloc masqué.
+  sponsors: [
+    { nom: "Copharmed",         logo: "img/partenaires/cophamed.webp" },
+    { nom: "UbiPharm Côte d'Ivoire", logo: "img/partenaires/ubipharm.webp" },
+    { nom: "Mac African",       logo: "img/partenaires/macafrican.webp" },
+    { nom: "Kabalane & Cie",    logo: "img/partenaires/kabalane.webp" },
+    { nom: "L'Oenophile",       logo: "img/partenaires/oenophile.webp" },
+    { nom: "Éditions Éburnie",  logo: "img/partenaires/eburnie.webp" },
+    { nom: "DMARK Consulting",  logo: "img/partenaires/dmark.webp" },
+    { nom: "Topex-CI",          logo: "img/partenaires/topex.webp" },
+    { nom: "Résidence Bertille", logo: "img/partenaires/bertille.webp" }
+  ],
   // Tant qu'il n'y a pas de logo : true = emplacements réservés visibles, false = bloc masqué.
   reserverSponsors: true
 };
@@ -485,6 +500,7 @@ var CONFIG = {
       etat[cle] = b.dataset.v;
       $$(".choix", g).forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
       if (cle === "statut") majStatut();
+      if (cle === "connaitFonds") $("#impact").hidden = etat.connaitFonds !== "Pas vraiment";
       effacerErreur(g.closest(".champ"));
       sauver();
     });
@@ -513,12 +529,10 @@ var CONFIG = {
   var cases = $$("#interets input");
   cases.forEach(function (c) {
     c.addEventListener("change", function () {
-      if (c.id === "pas-maintenant" && c.checked) cases.forEach(function (x) { if (x !== c) x.checked = false; });
-      else if (c.checked) $("#pas-maintenant").checked = false;
       majContact(); sauver();
     });
   });
-  function interets() { return cases.filter(function (c) { return c.checked && c.id !== "pas-maintenant"; }).map(function (c) { return c.value; }); }
+  function interets() { return cases.filter(function (c) { return c.checked; }).map(function (c) { return c.value; }); }
   function majContact() { $("#b-contact").hidden = interets().length === 0; }
 
   /* ---- Puces message ---- */
@@ -611,7 +625,7 @@ var CONFIG = {
       entreprise: s === "Partenaire / Sponsor" ? $("#entreprise").value.trim() : "",
       notes: etat.notes,
       recommandation: etat.recommandation, reviendra: etat.reviendra, connaitFonds: etat.connaitFonds,
-      interets: it.length ? it : ($("#pas-maintenant").checked ? ["Pas pour l'instant"] : []),
+      interets: it,
       telephone: it.length ? $("#tel").value.trim() : "",
       email: it.length ? $("#email").value.trim() : "",
       consentement: it.length ? $("#consent").checked : false,
@@ -678,6 +692,7 @@ var CONFIG = {
     $$(".choix").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
     CRITERES.forEach(function (c) { peindreEtoiles(c[0]); });
     ["lion-autre", "leo-autre", "invite-autre"].forEach(function (id) { $("#" + id).hidden = true; });
+    $("#impact").hidden = true;
     $$(".ko").forEach(effacerErreur); majStatut(); majContact();
     aller(0);
   });
@@ -698,7 +713,7 @@ var CONFIG = {
   }
   if (CONFIG.sponsors.length) {
     $("#bloc-sponsors").hidden = false;
-    CONFIG.sponsors.forEach(function (s) { var im = new Image(); im.src = s.logo; im.alt = s.nom; im.loading = "lazy"; $("#logos-sponsors").appendChild(im); });
+    CONFIG.sponsors.forEach(function (s) { var d = document.createElement("div"); d.className = "partenaire"; var im = new Image(); im.src = s.logo; im.alt = s.nom; im.title = s.nom; im.loading = "lazy"; im.decoding = "async"; d.appendChild(im); $("#logos-sponsors").appendChild(d); });
   }
 
   /* ---- Démarrage ---- */
