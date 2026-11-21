@@ -115,6 +115,10 @@ h1{margin:0;font-weight:800}
 .impact{background:var(--or-clair);border:1px solid var(--or);border-radius:16px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start}
 .impact p{margin:0;font-size:13px;line-height:1.5}
 .impact strong{color:var(--bleu)}
+.coeur{flex-shrink:0;width:46px;height:46px;margin:-8px -6px -8px -8px;border:0;background:none;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.coeur svg{fill:none;stroke:#00338D;transition:fill .2s,stroke .2s}
+.coeur[aria-pressed="true"] svg{fill:#E0245E;stroke:#E0245E;animation:bat .45s ease}
+@keyframes bat{0%{transform:scale(1)}30%{transform:scale(1.35)}60%{transform:scale(.9)}100%{transform:scale(1)}}
 
 .case{display:flex;align-items:center;gap:12px;min-height:48px;padding:0 14px;border-radius:14px;border:2px solid var(--bord);background:#fff;font-size:15px;font-weight:600;cursor:pointer}
 .case input{width:20px;height:20px;accent-color:var(--bleu);margin:0;flex-shrink:0}
@@ -296,7 +300,7 @@ textarea{min-height:200px;border:2px solid var(--bord);border-radius:16px;paddin
     </div>
   </div>
   <div class="impact" id="impact" hidden>
-    <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#00338D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg>
+    <button type="button" class="coeur" id="coeur" aria-label="J'aime cette action" aria-pressed="false"><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg></button>
     <p><strong>Cet évènement a un impact.</strong> Les fonds soutiennent le centre social et le centre féminin des Sœurs Servantes de Marie de Toupah : scolarité des filles, vivres pour les enfants malnutris, médicaments et équipements.</p>
   </div>
 </section>
@@ -540,6 +544,11 @@ var CONFIG = {
     });
   });
 
+  /* ---- Cœur de l'encadré impact (effet visuel seulement) ---- */
+  $("#coeur").addEventListener("click", function () {
+    this.setAttribute("aria-pressed", this.getAttribute("aria-pressed") === "true" ? "false" : "true");
+  });
+
   /* ---- Intérêts ---- */
   var cases = $$("#interets input");
   var NON = "Pas pour l'instant";
@@ -734,7 +743,7 @@ var CONFIG = {
     $$(".choix").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
     CRITERES.forEach(function (c) { peindreEtoiles(c[0]); });
     ["lion-autre", "leo-autre", "invite-autre"].forEach(function (id) { $("#" + id).hidden = true; });
-    $("#impact").hidden = true;
+    $("#impact").hidden = true; $("#coeur").setAttribute("aria-pressed", "false");
     $$(".ko").forEach(effacerErreur); majStatut(); majContact();
     aller(0);
   });
