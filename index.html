@@ -647,12 +647,30 @@ var CONFIG = {
     if (premier) premier.scrollIntoView({ behavior: "smooth", block: "center" });
     return ok;
   }
+  // Numéro ivoirien : 10 chiffres (01, 05, 07, 21, 25, 27), avec ou sans +225.
+  // Numéro étranger : commence par + ou 00 suivi d'un autre indicatif, 8 à 15 chiffres.
+  function msgTel(v) {
+    var brut = v.trim(), ch = brut.replace(/\D/g, "");
+    var inter = /^\+/.test(brut) || /^00/.test(ch);
+    if (/^00/.test(ch)) ch = ch.slice(2);
+    if (!ch) return "Un numéro est nécessaire pour vous recontacter.";
+    if (!inter || /^225/.test(ch)) {
+      if (inter) ch = ch.slice(3);
+      if (ch.length < 10) return "Il manque des chiffres : le numéro doit en avoir 10 (ex. 07 00 00 00 00).";
+      if (ch.length > 10) return "Il y a un chiffre de trop : le numéro doit en avoir 10 (ex. 07 00 00 00 00).";
+      if (!/^(01|05|07|21|25|27)/.test(ch)) return "Ce numéro ne semble pas valide. Il doit commencer par 01, 05, 07, 21, 25 ou 27.";
+      return "";
+    }
+    if (ch.length < 8 || ch.length > 15) return "Ce numéro international ne semble pas valide.";
+    return "";
+  }
   function valider4() {
     if (!aSuivre().length) return true;
     var ok = true;
     if (veut("Faire un don") && !$("#montant").value.replace(/\D/g, "")) { erreur($("#c-montant")); ok = false; }
     if (veut("Devenir partenaire / sponsor") && !$("#societe").value.trim()) { erreur($("#c-societe")); ok = false; }
-    if ($("#tel").value.replace(/\D/g, "").length < 8) { erreur($("#c-tel")); ok = false; }
+    var mt = msgTel($("#tel").value);
+    if (mt) { erreur($("#c-tel"), mt); ok = false; }
     if (!$("#consent").checked) { $("#e-consent").hidden = false; ok = false; }
     if (!ok) $("#b-contact").scrollIntoView({ behavior: "smooth", block: "center" });
     return ok;
