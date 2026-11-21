@@ -53,6 +53,7 @@ h1{margin:0;font-weight:800}
 .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:56px;border:0;border-radius:16px;font-size:17px;font-weight:700;cursor:pointer;text-decoration:none}
 .btn-or{background:var(--or);color:var(--bleu)}
 .btn-bleu{background:var(--bleu);color:#fff}
+.btn-passer{background:#fff;color:var(--bleu);border:2px solid var(--bleu)}
 .btn:active{transform:scale(.98)}
 .btn[disabled]{opacity:.6}
 
@@ -304,7 +305,7 @@ textarea{min-height:200px;border:2px solid var(--bord);border-radius:16px;paddin
 <section class="ecran" data-ecran="4" hidden>
   <div>
     <h1>Envie d'aller plus loin&nbsp;?</h1>
-    <p class="aide">Plusieurs choix possibles.</p>
+    <p class="aide"><b>Facultatif</b> · plusieurs choix possibles. Rien ne vous intéresse&nbsp;? Touchez «&nbsp;Passer cette étape&nbsp;».</p>
   </div>
   <div style="display:flex;flex-direction:column;gap:8px" id="interets">
     <label class="case"><input type="checkbox" value="Rejoindre le Lions Club">Rejoindre le Lions Club</label>
@@ -314,6 +315,16 @@ textarea{min-height:200px;border:2px solid var(--bord);border-radius:16px;paddin
   </div>
   <div class="bloc" id="b-contact" hidden>
     <span class="lbl" style="font-size:13px;color:var(--bleu)">Pour qu'un membre vous recontacte</span>
+    <div class="champ" id="c-montant" style="gap:4px" hidden>
+      <label class="lbl" for="montant" style="font-size:13px">Montant du don envisagé (FCFA) <span class="req">*</span></label>
+      <input class="txt petit" id="montant" type="text" inputmode="numeric" maxlength="15" placeholder="Ex. 50 000">
+      <p class="erreur" hidden>Indiquez le montant que vous souhaitez donner.</p>
+    </div>
+    <div class="champ" id="c-societe" style="gap:4px" hidden>
+      <label class="lbl" for="societe" style="font-size:13px">Nom de la société <span class="req">*</span></label>
+      <input class="txt petit" id="societe" type="text" autocomplete="organization" maxlength="100" placeholder="Nom de votre entreprise">
+      <p class="erreur" hidden>Indiquez le nom de la société.</p>
+    </div>
     <div class="champ" id="c-tel" style="gap:4px">
       <label class="lbl" for="tel" style="font-size:13px">Téléphone / WhatsApp <span class="req">*</span></label>
       <input class="txt petit" id="tel" type="tel" inputmode="tel" autocomplete="tel" maxlength="25" placeholder="07 00 00 00 00">
@@ -417,7 +428,8 @@ var CONFIG = {
     { nom: "Éditions Éburnie",  logo: "img/partenaires/eburnie.webp" },
     { nom: "DMARK Consulting",  logo: "img/partenaires/dmark.webp" },
     { nom: "Topex-CI",          logo: "img/partenaires/topex.webp" },
-    { nom: "Résidence Bertille", logo: "img/partenaires/bertille.webp" }
+    { nom: "Résidence Bertille", logo: "img/partenaires/bertille.webp" },
+    { nom: "Air Côte d'Ivoire", logo: "img/partenaires/aircdi.webp" }
   ],
   // Tant qu'il n'y a pas de logo : true = emplacements réservés visibles, false = bloc masqué.
   reserverSponsors: true
@@ -500,7 +512,10 @@ var CONFIG = {
       etat[cle] = b.dataset.v;
       $$(".choix", g).forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
       if (cle === "statut") majStatut();
-      if (cle === "connaitFonds") $("#impact").hidden = etat.connaitFonds !== "Pas vraiment";
+      if (cle === "connaitFonds") {
+        $("#impact").hidden = etat.connaitFonds !== "Pas vraiment";
+        if (!$("#impact").hidden && e.isTrusted) setTimeout(function () { $("#impact").scrollIntoView({ behavior: "smooth", block: "center" }); }, 60);
+      }
       effacerErreur(g.closest(".champ"));
       sauver();
     });
@@ -527,13 +542,28 @@ var CONFIG = {
 
   /* ---- Intérêts ---- */
   var cases = $$("#interets input");
+  var NON = "Pas pour l'instant";
   cases.forEach(function (c) {
     c.addEventListener("change", function () {
       majContact(); sauver();
     });
   });
   function interets() { return cases.filter(function (c) { return c.checked; }).map(function (c) { return c.value; }); }
-  function majContact() { $("#b-contact").hidden = interets().length === 0; }
+  function aSuivre() { return interets().filter(function (v) { return v !== NON; }); }
+  function veut(v) { return interets().indexOf(v) >= 0; }
+  function majContact() {
+    $("#b-contact").hidden = aSuivre().length === 0;
+    $("#c-montant").hidden = !veut("Faire un don");
+    $("#c-societe").hidden = !veut("Devenir partenaire / sponsor");
+    if (!$("#c-societe").hidden && !$("#societe").value && $("#entreprise").value) $("#societe").value = $("#entreprise").value.trim();
+    majBouton();
+  }
+  function majBouton() {
+    if (courant !== 4) return;
+    var passer = interets().length === 0;
+    $("#suivant").className = "btn " + (passer ? "btn-passer" : "btn-or");
+    $("#suivant").firstChild.nodeValue = passer ? "Passer cette étape " : "Suivant ";
+  }
 
   /* ---- Puces message ---- */
   $$(".puce").forEach(function (p) {
@@ -557,6 +587,7 @@ var CONFIG = {
       var s = $("#suivant");
       s.className = "btn " + (n === 5 ? "btn-bleu" : "btn-or");
       s.firstChild.nodeValue = n === 5 ? "Envoyer mes réponses " : "Suivant ";
+      majBouton();
     }
     window.scrollTo(0, 0);
     try { history.replaceState(null, "", n ? "#e" + n : location.pathname + location.search); } catch (e) {}
@@ -575,6 +606,12 @@ var CONFIG = {
   $("#nom").addEventListener("input", function () { effacerErreur($("#c-nom")); sauver(); });
   ["invite-par", "invite-autre", "lion-autre", "leo-autre", "entreprise"].forEach(function (id) { $("#" + id).addEventListener("input", function () { effacerErreur(this.closest(".bloc")); sauver(); }); });
   $("#tel").addEventListener("input", function () { effacerErreur($("#c-tel")); sauver(); });
+  $("#montant").addEventListener("input", function () {
+    var ch = this.value.replace(/\D/g, "").slice(0, 12);
+    this.value = ch ? Number(ch).toLocaleString("fr-FR").replace(/\s/g, "\u00a0") : "";
+    effacerErreur($("#c-montant")); sauver();
+  });
+  $("#societe").addEventListener("input", function () { effacerErreur($("#c-societe")); sauver(); });
   $("#email").addEventListener("input", sauver);
   $("#message").addEventListener("input", sauver);
   $("#consent").addEventListener("change", function () { $("#e-consent").hidden = true; sauver(); });
@@ -602,8 +639,10 @@ var CONFIG = {
     return ok;
   }
   function valider4() {
-    if (!interets().length) return true;
+    if (!aSuivre().length) return true;
     var ok = true;
+    if (veut("Faire un don") && !$("#montant").value.replace(/\D/g, "")) { erreur($("#c-montant")); ok = false; }
+    if (veut("Devenir partenaire / sponsor") && !$("#societe").value.trim()) { erreur($("#c-societe")); ok = false; }
     if ($("#tel").value.replace(/\D/g, "").length < 8) { erreur($("#c-tel")); ok = false; }
     if (!$("#consent").checked) { $("#e-consent").hidden = false; ok = false; }
     if (!ok) $("#b-contact").scrollIntoView({ behavior: "smooth", block: "center" });
@@ -616,7 +655,7 @@ var CONFIG = {
     if (s === "Lion") { club = radioVal("lionClub"); clubAutre = club === "Autre" ? $("#lion-autre").value.trim() : ""; }
     if (s === "Leo") { club = radioVal("leoClub"); clubAutre = club === "Autre" ? $("#leo-autre").value.trim() : ""; }
     if (s === "Invité(e)") { hoteClub = radioVal("hoteClub"); hoteAutre = hoteClub === "Autre" ? $("#invite-autre").value.trim() : ""; }
-    var it = interets();
+    var it = interets(), suivi = aSuivre().length > 0;
     return {
       nom: $("#nom").value.trim(), statut: s,
       club: club, clubAutre: clubAutre,
@@ -626,9 +665,11 @@ var CONFIG = {
       notes: etat.notes,
       recommandation: etat.recommandation, reviendra: etat.reviendra, connaitFonds: etat.connaitFonds,
       interets: it,
-      telephone: it.length ? $("#tel").value.trim() : "",
-      email: it.length ? $("#email").value.trim() : "",
-      consentement: it.length ? $("#consent").checked : false,
+      montantDon: suivi && veut("Faire un don") ? $("#montant").value.replace(/\D/g, "") : "",
+      societePartenaire: suivi && veut("Devenir partenaire / sponsor") ? $("#societe").value.trim() : "",
+      telephone: suivi ? $("#tel").value.trim() : "",
+      email: suivi ? $("#email").value.trim() : "",
+      consentement: suivi ? $("#consent").checked : false,
       message: $("#message").value.trim()
     };
   }
@@ -648,7 +689,8 @@ var CONFIG = {
     etat.notes = d.notes || {}; CRITERES.forEach(function (c) { peindreEtoiles(c[0]); });
     cases.forEach(function (c) { c.checked = (d.interets || []).indexOf(c.value) >= 0; });
     majContact();
-    $("#tel").value = d.telephone || ""; $("#email").value = d.email || ""; $("#consent").checked = !!d.consentement;
+    $("#tel").value = d.telephone || ""; $("#email").value = d.email || "";
+    $("#montant").value = d.montantDon ? Number(d.montantDon).toLocaleString("fr-FR").replace(/\s/g, "\u00a0") : ""; $("#societe").value = d.societePartenaire || ""; $("#consent").checked = !!d.consentement;
     $("#message").value = d.message || "";
     aller(Math.min(Math.max(b.e || 1, 1), 5));
   }
@@ -702,7 +744,7 @@ var CONFIG = {
     var d = document.createElement("div"); d.className = "logo";
     if (src) { var im = new Image(); im.src = src; im.alt = alt; im.loading = "lazy"; im.decoding = "async"; d.appendChild(im); }
     else { var v = document.createElement("div"); v.className = "logo-vide"; v.textContent = "[Logo du Gouverneur]"; d.appendChild(v); }
-    var s = document.createElement("span"); s.textContent = nom; d.appendChild(s); return d;
+    return d;
   }
   var lc = $("#logos-clubs");
   lc.appendChild(logo("Gouverneur", CONFIG.gouverneurLogo, "Logo du Gouverneur"));
